@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Smart Resume Analyzer";
+}
+
+<div class="hero">
+    <div class="hero-container animate-on-load">
+        <span class="hero-tag">Next-gen resume intelligence</span>
+        <h1 class="hero-title">Turn your experience into interview-ready momentum.</h1>
+        <p class="hero-description">Smart Resume Analyzer combines ATS scoring, skill matching, and career recommendations so your resume works harder for every application.</p>
+        <div class="hero-actions">
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-action="Analyze" class="start-btn">Analyze my resume</a>
+            }
+            else
+            {
+                <a asp-action="Register" class="start-btn">Create your free account</a>
+                <a asp-action="Login" class="ghost-btn">Already have an account</a>
+            }
+        </div>
+    </div>
+</div>
+
+<section class="features">
+    <div class="feature-card">
+        <h2>ATS ready scoring</h2>
+        <p>See how recruiters and applicant tracking systems rate your resume in seconds.</p>
+    </div>
+    <div class="feature-card">
+        <h2>Skill gap insights</h2>
+        <p>Spot missing keywords and boost your CV with high-value career terms.</p>
+    </div>
+    <div class="feature-card">
+        <h2>Career path guidance</h2>
+        <p>Discover the roles that suit your profile and land better opportunities faster.</p>
+    </div>
+</section>
+
+<section class="workflow">
+    <div class="workflow-card">
+        <span>Step 1</span>
+        <h3>Create your account</h3>
+        <p>Register quickly and save your resume history securely in one place.</p>
+    </div>
+    <div class="workflow-card">
+        <span>Step 2</span>
+        <h3>Upload your resume</h3>
+        <p>Submit your CV and tell us the roles or skills you want to target.</p>
+    </div>
+    <div class="workflow-card">
+        <span>Step 3</span>
+        <h3>Get instant results</h3>
+        <p>Receive an ATS score, matched skills, and tailored improvement suggestions.</p>
+    </div>
+</section>
+
+<section class="insight-banner">
+    <div class="insight-text">
+        <h2>Modern resume review for ambitious professionals.</h2>
+        <p>Smart Resume Analyzer makes the resume review process feel premium, fast, and easy to use.</p>
+    </div>
+</section>

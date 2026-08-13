@@ -1,0 +1,201 @@
+﻿@model SmartResumeAnalyzer.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="profile-page">
+    <div class="profile-header-card">
+        <div class="profile-hero">
+            <div class="profile-avatar-wrapper">
+                @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+                {
+                    <img src="@Model.ProfileImageUrl" alt="@Model.FullName" class="profile-avatar-large" />
+                }
+                else
+                {
+                    <div class="profile-avatar-large">@Model.FullName.Split(' ').Select(n => n[0]).Aggregate("", (a, b) => a + b)</div>
+                }
+            </div>
+            <div>
+                <span class="eyebrow">Account overview</span>
+                <h1>@Model.FullName</h1>
+                <p>@Model.Email</p>
+                <div class="profile-meta">
+                    <span>Member since @Model.MemberSince.ToString("MMMM yyyy")</span>
+                    <span>@Model.TotalResumesAnalyzed resume(s) analyzed</span>
+ 
+                @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+{
+    <div class="mt-2">
+        <strong>LinkedIn:</strong>
+        <a href="@Model.LinkedInUrl"
+           target="_blank"
+           rel="noopener noreferrer">
+            View LinkedIn Profile
+        </a>
+    </div>
+}
+</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="stat-card gradient-blue">
+            <h3>Total resumes uploaded</h3>
+            <strong>@Model.TotalResumesUploaded</strong>
+        </div>
+        <div class="stat-card gradient-purple">
+            <h3>Average ATS score</h3>
+            <div class="circle-stat">@Model.AverageATSScore<span>%</span></div>
+        </div>
+        <div class="stat-card gradient-indigo">
+            <h3>Highest ATS score</h3>
+            <div class="circle-stat">@Model.HighestATSScore<span>%</span></div>
+        </div>
+    </div>
+
+    <section class="section profile-section">
+        <div class="section-title-row">
+            <div>
+                <span class="eyebrow">Recent activity</span>
+                <h2>Recent resume analyses</h2>
+            </div>
+            <div class="quick-actions">
+                <a class="btn action-btn" asp-action="Analyze">Analyze New Resume</a>
+                <a class="btn action-btn outline" asp-action="Analyze">Upload Resume</a>
+            </div>
+        </div>
+        @if (TempData["ProfileSuccess"] != null)
+        {
+            <div class="alert alert-success">@TempData["ProfileSuccess"]</div>
+        }
+        @if (TempData["ProfileError"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ProfileError"]</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.LoadMessage))
+        {
+            <div class="alert alert-info">@Model.LoadMessage</div>
+        }
+
+        <div class="analysis-table">
+            <div class="table-head">
+                <span>Resume</span>
+                <span>ATS score</span>
+                <span>Date</span>
+                <span>Actions</span>
+            </div>
+            @foreach (var item in Model.RecentAnalyses)
+            {
+                <div class="table-row">
+                    <div>@item.FileName</div>
+                    <div><span class="badge score-badge">@item.ATSScore%</span></div>
+                    <div>@(item.Date.HasValue ? item.Date.Value.ToLocalTime().ToString("MMMM d, yyyy HH:mm") : "Unknown")</div>
+                    <div class="table-actions">
+                        <a class="btn btn-sm btn-outline-light" asp-action="ViewRecord" asp-route-id="@item.Id">View</a>
+                        <a class="btn btn-sm btn-primary" asp-action="Analyze">Re-analyze</a>
+                        <form asp-action="Delete" method="post" class="inline-form">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            @if (!Model.RecentAnalyses.Any())
+            {
+                <div class="table-empty">No resume history available yet.</div>
+            }
+        </div>
+    </section>
+
+    <section class="section insights-section">
+        <div class="insights-column">
+            <div class="insights-card">
+                <span class="eyebrow">Skills insights</span>
+                <h3>Top detected skills</h3>
+                <div class="skill-chip-row">
+                    @foreach (var skill in Model.TopSkills)
+                    {
+                        <span class="skill-chip">@skill</span>
+                    }
+                </div>
+            </div>
+            <div class="insights-card">
+                <span class="eyebrow">Recommendations</span>
+                <h3>Missing recommended skills</h3>
+                <div class="skill-chip-row">
+                    @foreach (var missing in Model.MissingSkills)
+                    {
+                        <span class="skill-chip outline">@missing</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="insights-card large-card">
+            <span class="eyebrow">Resume improvement</span>
+            <h3>Actionable suggestions</h3>
+            <ul>
+                @foreach (var suggestion in Model.ResumeSuggestions)
+                {
+                    <li>@suggestion</li>
+                }
+            </ul>
+        </div>
+    </section>
+</div>
+
+<style>
+    .profile-avatar-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-avatar-large {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: bold;
+        object-fit: cover;
+        border: 3px solid white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-avatar-upload-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        background-color: #667eea;
+        color: white;
+        border: 3px solid white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+    }
+
+    .profile-avatar-upload-btn:hover {
+        background-color: #764ba2;
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+    }
+
+    .profile-avatar-upload-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+</style>
+

@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Smart Resume Analyzer</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SmartResumeAnalyzer.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <div class="light-mode-character"></div>
+        <header class="site-header">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
+                <div class="container-fluid nav-container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Smart Resume Analyzer</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <div class="page-links-panel">
+                            <ul class="navbar-nav flex-grow-1 page-links justify-content-center">
+                                @if (User?.Identity?.IsAuthenticated ?? false)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Analyze">Analyze</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-cta" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-cta" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="nav-profile">
+                            <button id="theme-toggle-btn" type="button" class="theme-toggle-btn" data-theme="dark" title="Toggle dark/light mode" aria-label="Toggle dark/light mode" aria-pressed="false">
+                                <span class="theme-toggle-track" aria-hidden="true">
+                                    <span class="theme-toggle-thumb"></span>
+                                </span>
+                                <span class="theme-label">NIGHT MODE</span>
+                                <span class="theme-label-light">DAY MODE</span>
+                            </button>
+                            @if (User?.Identity?.IsAuthenticated ?? false)
+                            {
+                                var avatarUrl = User.FindFirst("avatar_url")?.Value;
+                                var displayName = User.FindFirst("full_name")?.Value ?? User.Identity?.Name ?? "U";
+                                var initials = string.Concat(displayName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(n => n[0])).ToUpperInvariant();
+                                <a class="nav-link profile-link" asp-controller="Home" asp-action="Profile" title="Profile">
+                                    @if (!string.IsNullOrEmpty(avatarUrl))
+                                    {
+                                        <img class="profile-avatar-img" src="@avatarUrl" alt="Profile picture" />
+                                    }
+                                    else
+                                    {
+                                        <span class="profile-avatar">@initials</span>
+                                    }
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main role="main" class="app-main">
+            @RenderBody()
+        </main>
+
+        <footer class="site-footer">
+            <div class="container text-center">
+                <p>© @DateTime.Now.Year Smart Resume Analyzer · Built for smarter career growth.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

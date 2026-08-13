@@ -1,0 +1,8 @@
+{
+  "Supabase": {
+    "Url": "https://YOUR-PROJECT.supabase.co",
+    "AnonKey": "YOUR_SUPABASE_ANON_KEY",
+    "BucketName": "documents",
+    "UserRecordsTable": "userRecords"
+  }
+}

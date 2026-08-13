@@ -1,0 +1,59 @@
+﻿@model SmartResumeAnalyzer.Models.RecordDetailViewModel
+
+@{
+    ViewData["Title"] = "Resume details";
+}
+
+<div class="record-details-page">
+    <div class="record-details-card animate-on-load">
+        <div class="result-header">
+            <span class="eyebrow">Resume history</span>
+            <h1>Review your uploaded CV</h1>
+            <p>Download the original file, review the saved score, and see the suggestions saved with this analysis.</p>
+        </div>
+
+        <div class="detail-group">
+            <h2>Resume information</h2>
+            <dl>
+                <dt>File name</dt>
+                <dd>@Model.FileName</dd>
+                <dt>Uploaded</dt>
+                <dd>@(Model.CreatedAt.HasValue ? Model.CreatedAt.Value.ToLocalTime().ToString("MMMM d, yyyy HH:mm") : "Unknown")</dd>
+                <dt>ATS score</dt>
+                <dd>@Model.ATSScore%</dd>
+            </dl>
+        </div>
+
+        <div class="detail-group">
+            <h2>Suggestions & notes</h2>
+            @if (!string.IsNullOrWhiteSpace(Model.Suggestions))
+            {
+                <div class="suggestions-list">
+                    <h3>Saved suggestions</h3>
+                    <ul>
+                        @foreach (var suggestion in Model.Suggestions.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        {
+                            <li>@suggestion</li>
+                        }
+                    </ul>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Notes))
+            {
+                <div class="notes-block">
+                    <h3>Captured notes</h3>
+                    <p>@Model.Notes</p>
+                </div>
+            }
+            @if (string.IsNullOrWhiteSpace(Model.Suggestions) && string.IsNullOrWhiteSpace(Model.Notes))
+            {
+                <div class="alert alert-info">No suggestions or notes were stored for this resume.</div>
+            }
+        </div>
+
+        <div class="detail-actions">
+            <a asp-action="Profile" class="btn btn-outline-light">Back to history</a>
+        </div>
+    </div>
+</div>
+

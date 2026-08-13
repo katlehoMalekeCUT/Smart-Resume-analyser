@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Analyze Resume";
+}
+
+<div class="analyze-container">
+    <div class="analyze-box animate-on-load">
+        <div class="section-header">
+            <span class="eyebrow">Resume Review</span>
+            <h1>Upload your resume and get instant ATS feedback.</h1>
+        </div>
+
+        <p class="analyze-description">Choose your file, add the skills you're targeting, and Smart Resume Analyzer will score your resume with recommended improvements.</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form id="analyzeForm" asp-action="Analyze" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="resumeFile">Upload your resume</label>
+                <div class="upload-box">
+                    <label class="file-picker" for="resumeFile">
+                        <span class="file-picker-text">Choose resume file</span>
+                        <small>PDF or DOCX</small>
+                    </label>
+                    <input type="file" id="resumeFile" name="resumeFile" required />
+                </div>
+                <p class="field-note">Your resume will stay private and only be used to provide ATS feedback.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="skills">Target skills</label>
+                <textarea id="skills" name="skills" class="skills-field" placeholder="Enter skills separated by commas... Example: C#, ASP.NET, SQL, React, JavaScript" required></textarea>
+            </div>
+
+            <div id="analysisProgress" class="analysis-progress-panel" hidden>
+                <div class="analysis-progress-row">
+                    <span class="analysis-progress-label">Analysis progress</span>
+                    <span id="analysisProgressPercent" class="analysis-progress-value">0%</span>
+                </div>
+                <div class="analysis-progress-track" aria-hidden="true">
+                    <div id="analysisProgressFill" class="analysis-progress-fill" style="width: 0%;"></div>
+                </div>
+                <p class="analysis-progress-note">Your resume is being reviewed. This may take a few seconds.</p>
+            </div>
+
+            <button type="submit" class="analyze-btn">Analyze CV</button>
+        </form>
+    </div>
+</div>

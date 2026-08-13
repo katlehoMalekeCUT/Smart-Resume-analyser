@@ -1,0 +1,123 @@
+﻿@model SmartResumeAnalyzer.Models.AnalyzeResultViewModel
+
+@{
+    ViewData["Title"] = "ATS Result";
+}
+
+<div class="result-container">
+    <div class="result-card animate-on-load">
+        <div class="result-header">
+            <span class="eyebrow">Resume analyzed</span>
+            <h1>Your uploaded CV is ready</h1>
+            <p>This page shows the resume you uploaded, the skills you entered, and the suggestions generated for your ATS score.</p>
+        </div>
+
+        <div class="result-metrics animate-on-load">
+            @{
+                var resumeScore = Model.ResumeResult.ATSScore;
+                var keywordMatch = Model.ResumeResult.MatchedSkills;
+                var atsFriendliness = Math.Max(30, 100 - Model.ResumeResult.Suggestions.Count * 5);
+            }
+            <div class="metric-card">
+                <span class="metric-label">Resume Score</span>
+                <strong class="metric-value" data-target="@resumeScore">0</strong><span class="metric-suffix">%</span>
+                <p class="metric-note">An instant ATS readiness score based on your resume strength.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Keyword Match</span>
+                <strong class="metric-value" data-target="@keywordMatch">0</strong>
+                <p class="metric-note">The number of targeted keywords found in your resume.</p>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">ATS Friendliness</span>
+                <strong class="metric-value" data-target="@atsFriendliness">0</strong><span class="metric-suffix">%</span>
+                <p class="metric-note">A quick estimate of how friendly your resume is for automated screening.</p>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="alert alert-info">@Model.Message</div>
+        }
+
+        <div class="result-grid">
+            <div class="score-widget">
+                <div class="score-circle" style="--progress:@Model.ResumeResult.ATSScore;">
+                    <div class="score-inner">
+                        <span class="score-number">@Model.ResumeResult.ATSScore<span>%</span></span>
+                        <small>ATS Score</small>
+                    </div>
+                </div>
+                <div class="score-details">
+                    <div class="score-detail">
+                        <span class="detail-label">Matched skills</span>
+                        <strong>@Model.ResumeResult.MatchedSkills</strong>
+                    </div>
+                    <div class="score-detail">
+                        <span class="detail-label">Suggestions</span>
+                        <strong>@Model.ResumeResult.Suggestions.Count suggestion(s)</strong>
+                    </div>
+                    <div class="score-detail">
+                        <span class="detail-label">Recommendation</span>
+                        <strong>@Model.ResumeResult.CareerRecommendation</strong>
+                    </div>
+                    <div class="score-detail">
+                        <span class="detail-label">Resume</span>
+                        <strong>@Model.FileName</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="score-summary">
+                <div class="score-summary-panel">
+                    <h2>Target skills</h2>
+                    <p>@(string.IsNullOrWhiteSpace(Model.SkillsInput) ? "No skills were entered." : Model.SkillsInput)</p>
+                    <div class="score-badges">
+                        <span>Score: @Model.ResumeResult.ATSScore%</span>
+                        <span>Skills matched: @Model.ResumeResult.MatchedSkills</span>
+                        <span>Suggestions: @Model.ResumeResult.Suggestions.Count</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-highlights">
+            <div class="highlight-card">
+                <strong>@Model.ResumeResult.ATSScore% ATS readiness</strong>
+                <p>Gauge how likely your resume is to pass ATS filters on the first scan.</p>
+            </div>
+            <div class="highlight-card">
+                <strong>@Model.ResumeResult.MatchedSkills matched skills</strong>
+                <p>Highlight your strongest keyword coverage and where you can improve.</p>
+            </div>
+            <div class="highlight-card">
+                <strong>@Model.ResumeResult.Suggestions.Count quick wins</strong>
+                <p>Use these action items to make your resume stand out to recruiters.</p>
+            </div>
+        </div>
+
+        <div class="section double-column">
+            <div>
+                <h3>Missing Skills</h3>
+                <ul>
+                    @foreach (var skill in Model.ResumeResult.MissingSkills)
+                    {
+                        <li>@skill</li>
+                    }
+                </ul>
+            </div>
+            <div>
+                <h3>Suggestions</h3>
+                <ul>
+                    @foreach (var suggestion in Model.ResumeResult.Suggestions)
+                    {
+                        <li>@suggestion</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="detail-actions">
+            <a asp-action="Profile" class="btn btn-outline-light">Go to history</a>
+        </div>
+    </div>
+</div>

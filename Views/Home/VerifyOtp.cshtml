@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Verify your email";
+}
+
+<h2>Verify your email</h2>
+<p>We sent a 6-digit code to <strong>@ViewBag.Email</strong>. Enter it below to finish creating your account.</p>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger">
+        @Html.ValidationSummary(false)
+    </div>
+}
+
+<form method="post" asp-action="VerifyOtp">
+    <input type="hidden" name="email" value="@ViewBag.Email" />
+    <div class="form-group">
+        <label>Verification code</label>
+        <input type="text" name="code" maxlength="6" class="form-control" placeholder="123456" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Verify</button>
+</form>
