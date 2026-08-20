@@ -1,4 +1,4 @@
-﻿# Smart Resume Analyzer
+# Smart Resume Analyzer
 
 An automated, enterprise-grade resume evaluation and optimization web application built with ASP.NET Core 8 MVC and Supabase BaaS (Backend-as-a-Service).Smart Resume Analyzer bridges the gap between job seekers and Applicant Tracking Systems (ATS). By programmatic extraction and algorithmic analysis, the platform parses PDF resumes, cross-references content against target technical matrices, and delivers deterministic scoring alongside actionable, data-driven optimization strategies.
 
@@ -106,7 +106,7 @@ dotnet test
 dotnet run --project SmartResumeAnalyzer.csproj
 ```
 
-Open the local URL shown in the terminal (usually https://localhost:xxxx).
+Open the local URL shown in the terminal (usually https://localhost:52**).
 
 ### Configuration (Supabase)
 
