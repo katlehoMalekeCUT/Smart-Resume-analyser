@@ -14,7 +14,7 @@ An automated, enterprise-grade resume evaluation and optimization web applicatio
 
 ## Why it matters
 
-Many resumes include strong experience but still miss key words that recruiters and applicant tracking systems expect. This app makes it easier to see where a resume is strong and which skills are worth emphasizing.
+Many resumes include strong experience but still miss key words that recruiters and applicant tracking systems expect. This app makes it easier to see where a resume is strong and which skills are worth emphasizing by comparing the resume with the job Description.
 
 ## Key features
 
@@ -142,14 +142,7 @@ dotnet test
 To run a specific test class or method use the `--filter` option. For example:
 
 ```bash
-dotnet test --filter "ClassName=ATSScoringServiceTests"
-```
-
-### Notes
-
-- Do not commit real Supabase secret keys to the repository. Use the example file or environment variables.
-- If you get a build file locked error, stop any running `dotnet` processes and run `dotnet clean`.
-- The `improvement/ready-for-production` branch contains minor improvements and safety fallbacks to make local runs easier for reviewers.
+dotnet test --filter "
 
 ## Important pages
 
@@ -162,13 +155,6 @@ dotnet test --filter "ClassName=ATSScoringServiceTests"
 - `/Home/EditProfile` — update profile details
 - `/Home/ViewRecord?id={recordId}` — view saved analysis details
 - `/Home/Privacy` — privacy page
-
-## Contributing
-
-- Keep `main` stable
-- Use feature branches such as `main/xxx`
-- Commit with clear, meaningful messages
-- Open pull requests for review
 
 ## Troubleshooting
 
@@ -185,3 +171,4 @@ dotnet test --filter "ClassName=ATSScoringServiceTests"
 - Secure Supabase secrets with environment variables
 - Add filtering and pagination for history
 - Improve user progress feedback and UI messaging
+-Add a learning model for better improvements and results 
